@@ -1,0 +1,81 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>{{ showRegister ? 'Register' : 'Login' }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      @if (!showRegister) {
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter your email">
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <mat-error>Please enter a valid email address</mat-error>
+            }
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Enter your password">
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <mat-error>Password must be at least 6 characters</mat-error>
+            }
+          </mat-form-field>
+          
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading">
+              @if (isLoading) {
+                <mat-spinner diameter="24"></mat-spinner>
+              } @else {
+                Login
+              }
+            </button>
+          </div>
+        </form>
+      } @else {
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter your email">
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+              <mat-error>Please enter a valid email address</mat-error>
+            }
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Enter your password">
+            @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+              <mat-error>Password must be at least 6 characters</mat-error>
+            }
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm your password">
+            @if (registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched) {
+              <mat-error>Passwords do not match</mat-error>
+            }
+          </mat-form-field>
+          
+          <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || isLoading">
+              @if (isLoading) {
+                <mat-spinner diameter="24"></mat-spinner>
+              } @else {
+                Register
+              }
+            </button>
+          </div>
+        </form>
+      }
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-button (click)="toggleRegister()">
+        {{ showRegister ? 'Already have an account? Login' : 'Need an account? Register' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

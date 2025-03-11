@@ -1,0 +1,74 @@
+<div class="submodel-form mat-elevation-z8">
+    <h2>{{ isEditMode ? 'Edit Submodel' : 'Create New Submodel' }}</h2>
+  
+    <form [formGroup]="submodelForm" (ngSubmit)="onSubmit()" class="form-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Enter submodel name" />
+        <mat-error *ngIf="submodelForm.get('name')?.invalid && submodelForm.get('name')?.touched">
+          <div *ngIf="submodelForm.get('name')?.hasError('required')">Name is required.</div>
+          <div *ngIf="submodelForm.get('name')?.hasError('minlength')">Name must be at least 3 characters.</div>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Engine Type</mat-label>
+        <input matInput type="text" formControlName="engineType" placeholder="Enter engine type" />
+        <mat-error *ngIf="submodelForm.get('engineType')?.invalid && submodelForm.get('engineType')?.touched">
+          Engine Type is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Horsepower</mat-label>
+        <input matInput type="number" formControlName="horsepower" placeholder="Enter horsepower" />
+        <mat-error *ngIf="submodelForm.get('horsepower')?.invalid && submodelForm.get('horsepower')?.touched">
+          <div *ngIf="submodelForm.get('horsepower')?.hasError('required')">Horsepower is required.</div>
+          <div *ngIf="submodelForm.get('horsepower')?.hasError('min')">Horsepower must be at least 50.</div>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Torque</mat-label>
+        <input matInput type="number" formControlName="torque" placeholder="Enter torque" />
+        <mat-error *ngIf="submodelForm.get('torque')?.invalid && submodelForm.get('torque')?.touched">
+          <div *ngIf="submodelForm.get('torque')?.hasError('required')">Torque is required.</div>
+          <div *ngIf="submodelForm.get('torque')?.hasError('min')">Torque must be at least 50.</div>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Transmission</mat-label>
+        <input matInput type="text" formControlName="transmission" placeholder="Enter transmission type" />
+        <mat-error *ngIf="submodelForm.get('transmission')?.invalid && submodelForm.get('transmission')?.touched">
+          Transmission is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Year</mat-label>
+        <input matInput type="number" formControlName="year" placeholder="Enter year" />
+        <mat-error *ngIf="submodelForm.get('year')?.invalid && submodelForm.get('year')?.touched">
+          <div *ngIf="submodelForm.get('year')?.hasError('required')">Year is required.</div>
+          <div *ngIf="submodelForm.get('year')?.hasError('min')">Year must be after 1900.</div>
+          <div *ngIf="submodelForm.get('year')?.hasError('max')">Year cannot be in the future.</div>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Image URL</mat-label>
+        <input matInput type="text" formControlName="imageURL" placeholder="Enter image URL" />
+        <mat-error *ngIf="submodelForm.get('imageURL')?.invalid && submodelForm.get('imageURL')?.touched">
+          Image URL is required.
+        </mat-error>
+      </mat-form-field>
+  
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="submodelForm.invalid">
+          {{ isEditMode ? 'Update Submodel' : 'Create Submodel' }}
+        </button>
+        <button mat-button color="warn" type="button" routerLink="/models">Cancel</button>
+      </div>
+    </form>
+  </div>
+  

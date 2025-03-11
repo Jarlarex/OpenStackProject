@@ -1,0 +1,98 @@
+### 1. POST request with correct data
+POST http://localhost:3000/api/v1/models HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995,
+  "yearDiscontinued": 2003,
+  "description": "Fourth-generation BMW 5 Series",
+  "submodels": [
+    {
+      "name": "528i",
+      "engineType": "I6",
+      "horsepower": 190,
+      "torque": 245,
+      "transmission": "Manual",
+      "year": 1997,
+      "imageURL": "https://example.com/e39_528i.jpg"
+    }
+  ]
+}
+
+### 2. POST request which fails validation
+POST http://localhost:3000/api/v1/models HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995
+}
+
+### 3. GET request on the set of resources.
+GET http://localhost:3000/api/v1/models HTTP/3.0
+Content-Type: application/json
+
+### 4. GET request on an individual resource with succeeds.
+GET http://localhost:3000/api/v1/models/6715762b332fe604df743257 HTTP/3.0
+Content-Type: application/json
+
+### 5. GET request on an individual resource which fails.
+GET http://localhost:3000/api/v1/models/7498327hfhshdhdh HTTP/3.0
+Content-Type: application/json
+
+### 6. DELETE request on an individual resource which succeeds.
+DELETE http://localhost:3000/api/v1/models/6715762b332fe604df743257 HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+### 7. DELETE request on an individual resource which fails.
+DELETE http://localhost:3000/api/v1/models/7498327hfhshdhdh HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+### 8. PUT request on an individual resource which succeeds.
+PUT http://localhost:3000/api/v1/models/6715764e332fe604df743258 HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995,
+  "yearDiscontinued": 2003,
+  "description": "Updated description and image",
+  "submodels": [
+    {
+      "name": "528i",
+      "engineType": "I6",
+      "horsepower": 190,
+      "torque": 245,
+      "transmission": "Manual",
+      "year": 1997,
+      "imageURL": "https://www.e39source.com/img/IMG_Cooling%20System.jpeg"
+    }
+  ]
+}
+
+### 9. PUT request on an individual resource which fails as the resource cannot be found.
+PUT http://localhost:3000/api/v1/models/7498327hfhshdhdh HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995,
+  "yearDiscontinued": 2003,
+  "description": "Updated description"
+}
+
+### 10. PUT request on an individual resource which fails as the data is not valid.
+PUT http://localhost:3000/api/v1/models/6715764e332fe604df743258 HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "yearIntroduced": hres
+}

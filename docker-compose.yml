@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo:latest
+    container_name: bmw-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    networks:
+      - bmw-network
+
+  # Backend API service
+  backend:
+    build:
+      context: ./bmw-api
+      dockerfile: Dockerfile
+    container_name: bmw-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_CONN_STRING=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017
+      - DB_NAME=bmw_database
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - bmw-network
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./BmwApiPt2
+      dockerfile: Dockerfile
+    container_name: bmw-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - bmw-network
+
+networks:
+  bmw-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

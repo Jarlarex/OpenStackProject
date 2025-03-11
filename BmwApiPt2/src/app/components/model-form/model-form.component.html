@@ -1,0 +1,62 @@
+<div class="model-form mat-elevation-z8">
+  <h2>{{ isEditMode ? 'Edit Model' : 'Create New Model' }}</h2>
+
+  <form [formGroup]="modelForm" (ngSubmit)="onSubmit()" class="form-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" placeholder="Enter model name" />
+      <mat-error *ngIf="modelForm.get('name')?.invalid && modelForm.get('name')?.touched">
+        <div *ngIf="modelForm.get('name')?.hasError('required')">Name is required.</div>
+        <div *ngIf="modelForm.get('name')?.hasError('minlength')">
+          Name must be at least 3 characters long.
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Year Introduced</mat-label>
+      <input matInput type="number" formControlName="yearIntroduced" placeholder="Enter year introduced" />
+      <mat-error *ngIf="modelForm.get('yearIntroduced')?.invalid && modelForm.get('yearIntroduced')?.touched">
+        <div *ngIf="modelForm.get('yearIntroduced')?.hasError('required')">
+          Year Introduced is required.
+        </div>
+        <div *ngIf="modelForm.get('yearIntroduced')?.hasError('min')">Year must be after 1900.</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Year Discontinued</mat-label>
+      <input matInput type="number" formControlName="yearDiscontinued" placeholder="Enter year discontinued" />
+      <mat-error *ngIf="modelForm.get('yearDiscontinued')?.invalid && modelForm.get('yearDiscontinued')?.touched">
+        <div *ngIf="modelForm.get('yearDiscontinued')?.hasError('required')">
+          Year Discontinued is required.
+        </div>
+        <div *ngIf="modelForm.get('yearDiscontinued')?.hasError('max')">
+          Year must be before 2025.
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Enter description"
+        maxlength="500"
+      ></textarea>
+      <mat-error *ngIf="modelForm.get('description')?.invalid && modelForm.get('description')?.touched">
+        <div *ngIf="modelForm.get('description')?.hasError('maxlength')">
+          Description must be under 500 characters.
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="modelForm.invalid">
+        {{ isEditMode ? 'Update Model' : 'Create Model' }}
+      </button>
+      <button mat-button color="warn" type="button" routerLink="/models">Cancel</button>
+    </div>
+  </form>
+</div>

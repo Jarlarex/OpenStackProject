@@ -1,0 +1,218 @@
+<div class="model-list-container">
+  <!-- Title -->
+  <div class="header">
+    <h2 class="bmw-primary">BMW Models</h2>
+    @if (isAdmin()) {
+      <button mat-raised-button color="primary" routerLink="/models/new">
+        <mat-icon>add</mat-icon> Add New Model
+      </button>
+    }
+  </div>
+
+  <!-- Loading Indicator -->
+  @if (loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Loading models...</p>
+    </div>
+  }
+
+  <!-- Error Message -->
+  @if (error()) {
+    <div class="error-container">
+      <mat-card class="error-card">
+        <mat-card-content>
+          <p class="error-message">{{ error() }}</p>
+          <button mat-raised-button color="primary" (click)="modelService.loadAllModels()">
+            Try Again
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  <!-- Models Table -->
+  @if (!loading() && !error() && models().length > 0) {
+    <div class="table-container">
+      <table mat-table [dataSource]="models()" class="mat-elevation-z8 models-table">
+        <!-- Name and Submodels -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name | Submodels</th>
+          <td mat-cell *matCellDef="let model">
+            <div class="model-name-container">
+              <span class="model-name">{{ model.name }}</span>
+              <button mat-icon-button (click)="toggleSubmodels(model)">
+                <mat-icon>{{ model.isExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Year Introduced -->
+        <ng-container matColumnDef="yearIntroduced">
+          <th mat-header-cell *matHeaderCellDef>Year Introduced</th>
+          <td mat-cell *matCellDef="let model">{{ model.yearIntroduced }}</td>
+        </ng-container>
+
+        <!-- Year Discontinued -->
+        <ng-container matColumnDef="yearDiscontinued">
+          <th mat-header-cell *matHeaderCellDef>Year Discontinued</th>
+          <td mat-cell *matCellDef="let model">
+            {{ model.yearDiscontinued || 'Present' }}
+          </td>
+        </ng-container>
+
+        <!-- Description -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let model">{{ model.description }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let model">
+            @if (isAdmin()) {
+              <button mat-icon-button color="primary" [routerLink]="['/models', model._id, 'edit']">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteModel(model._id!)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Header and Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+      </table>
+      
+      <!-- Submodels Section (Outside the table) -->
+      @for (model of models(); track model._id) {
+        @if (model.isExpanded) {
+          <div class="submodels-section" [id]="'submodels-' + model._id">
+            <div class="submodels-header">
+              <h3>{{ model.name }} Submodels</h3>
+            </div>
+            
+            @if (model.submodels && model.submodels.length > 0) {
+              <div class="submodels-list">
+                @for (submodel of model.submodels; track submodel._id) {
+                  <mat-card class="submodel-card">
+                    <div class="submodel-row">
+                      <div class="submodel-image-container">
+                        @if (submodel.imageURL) {
+                          <img [src]="submodel.imageURL" [alt]="submodel.name" class="submodel-image">
+                        } @else {
+                          <div class="placeholder-image">
+                            <mat-icon>directions_car</mat-icon>
+                          </div>
+                        }
+                      </div>
+                      <div class="submodel-content">
+                        <h3 class="submodel-name">{{ submodel.name }}</h3>
+                        
+                        <div class="submodel-details">
+                          <div class="detail-item">
+                            <span class="detail-label">Engine:</span>
+                            <span class="detail-value">{{ submodel.engineType }}</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="detail-label">Horsepower:</span>
+                            <span class="detail-value">{{ submodel.horsepower }} hp</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="detail-label">Torque:</span>
+                            <span class="detail-value">{{ submodel.torque }} Nm</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="detail-label">Year:</span>
+                            <span class="detail-value">{{ submodel.year }}</span>
+                          </div>
+                          @if (submodel.acceleration) {
+                            <div class="detail-item">
+                              <span class="detail-label">0-60 mph:</span>
+                              <span class="detail-value">{{ submodel.acceleration }} sec</span>
+                            </div>
+                          }
+                          @if (submodel.topSpeed) {
+                            <div class="detail-item">
+                              <span class="detail-label">Top Speed:</span>
+                              <span class="detail-value">{{ submodel.topSpeed }} mph</span>
+                            </div>
+                          }
+                        </div>
+                        
+                        <div class="submodel-actions">
+                          @if (isAuthenticated()) {
+                            <button mat-icon-button 
+                                    [color]="isSubmodelLiked(model._id!, submodel._id!) ? 'warn' : ''" 
+                                    (click)="toggleLikeSubmodel(model._id!, submodel._id!)" 
+                                    title="Like this car">
+                              <mat-icon>favorite</mat-icon>
+                            </button>
+                          }
+                          
+                          @if (isAdmin()) {
+                            <button mat-icon-button color="primary" 
+                              [routerLink]="['/models', model._id, 'submodels', submodel._id, 'edit']">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" 
+                              (click)="deleteSubmodel(model._id!, submodel._id!)">
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+              
+              @if (isAdmin()) {
+                <button mat-button color="primary" 
+                  [routerLink]="['/models', model._id, 'submodels', 'new']" 
+                  class="add-submodel-btn">
+                  <mat-icon>add</mat-icon> Add Submodel
+                </button>
+              }
+            } @else {
+              <p class="no-submodels">No submodels available for this model.</p>
+              @if (isAdmin()) {
+                <button mat-button color="primary" 
+                  [routerLink]="['/models', model._id, 'submodels', 'new']">
+                  <mat-icon>add</mat-icon> Add Submodel
+                </button>
+              }
+            }
+          </div>
+        }
+      }
+    </div>
+  } @else if (!loading() && !error()) {
+    <div class="no-models">
+      <p>No BMW models available.</p>
+      @if (isAdmin()) {
+        <button mat-raised-button color="primary" routerLink="/models/new">
+          <mat-icon>add</mat-icon> Add First Model
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Login Prompt for Unauthenticated Users -->
+  @if (!isAuthenticated()) {
+    <div class="login-prompt">
+      <mat-card>
+        <mat-card-content>
+          <p>Sign in to like cars and access more features.</p>
+          <button mat-raised-button color="primary" (click)="navigateToLogin()">
+            <mat-icon>login</mat-icon> Sign In
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

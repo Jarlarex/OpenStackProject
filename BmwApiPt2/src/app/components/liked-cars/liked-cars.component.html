@@ -1,0 +1,102 @@
+<div class="liked-cars-container">
+  <!-- Title -->
+  <div class="header">
+    <h2 class="bmw-primary">My Liked Cars</h2>
+  </div>
+
+  <!-- Loading Indicator -->
+  @if (loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Loading your liked cars...</p>
+    </div>
+  }
+
+  <!-- Error Message -->
+  @if (error()) {
+    <div class="error-container">
+      <mat-card class="error-card">
+        <mat-card-content>
+          <p class="error-message">{{ error() }}</p>
+          <button mat-raised-button color="primary" (click)="loadLikedSubmodels()">
+            Try Again
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  <!-- Liked Cars Grid -->
+  @if (!loading() && !error()) {
+    @if (likedSubmodels().length > 0) {
+      <div class="liked-cars-grid">
+        @for (item of likedSubmodels(); track item.submodelId) {
+          <mat-card class="car-card">
+            <div class="car-image-container">
+              @if (item.submodel.imageURL) {
+                <img [src]="item.submodel.imageURL" [alt]="item.submodel.name" class="car-image">
+              } @else {
+                <div class="placeholder-image">
+                  <mat-icon>directions_car</mat-icon>
+                </div>
+              }
+            </div>
+            <mat-card-content>
+              <h3 class="model-name">{{ item.modelName }}</h3>
+              <h4 class="submodel-name">{{ item.submodel.name }}</h4>
+              
+              <div class="car-details">
+                <div class="detail-item">
+                  <span class="detail-label">Engine:</span>
+                  <span class="detail-value">{{ item.submodel.engineType }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Horsepower:</span>
+                  <span class="detail-value">{{ item.submodel.horsepower }} hp</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Torque:</span>
+                  <span class="detail-value">{{ item.submodel.torque }} Nm</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Year:</span>
+                  <span class="detail-value">{{ item.submodel.year }}</span>
+                </div>
+                @if (item.submodel.acceleration) {
+                  <div class="detail-item">
+                    <span class="detail-label">0-60 mph:</span>
+                    <span class="detail-value">{{ item.submodel.acceleration }} sec</span>
+                  </div>
+                }
+                @if (item.submodel.topSpeed) {
+                  <div class="detail-item">
+                    <span class="detail-label">Top Speed:</span>
+                    <span class="detail-value">{{ item.submodel.topSpeed }} mph</span>
+                  </div>
+                }
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button color="warn" (click)="unlikeSubmodel(item.modelId, item.submodelId)" 
+                      title="Remove from liked cars">
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    } @else {
+      <div class="no-liked-cars">
+        <mat-card>
+          <mat-card-content>
+            <mat-icon class="large-icon">favorite_border</mat-icon>
+            <p>You haven't liked any cars yet.</p>
+            <button mat-raised-button color="primary" (click)="navigateToModels()">
+              Browse Models
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  }
+</div>

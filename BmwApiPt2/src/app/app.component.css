@@ -1,0 +1,79 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbar-left, .toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.app-title {
+  margin-left: 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.user-email {
+  margin-right: 16px;
+  font-size: 14px;
+}
+
+.sidenav-container {
+  flex: 1;
+  margin-top: 64px; /* Height of the toolbar */
+}
+
+.sidenav {
+  width: 250px;
+  padding-top: 16px;
+}
+
+.content {
+  padding: 20px;
+}
+
+.nav-label {
+  margin-left: 16px;
+}
+
+mat-icon {
+  margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+  .sidenav-container {
+    margin-top: 56px; /* Smaller toolbar height on mobile */
+  }
+  
+  .app-title {
+    font-size: 18px;
+  }
+  
+  .user-email {
+    display: none;
+  }
+}
+
+/* Active route styling */
+.active-link {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--bmw-blue) !important;
+  font-weight: 500;
+  border-left: 4px solid var(--bmw-blue);
+}
+
+.active-link mat-icon {
+  color: var(--bmw-blue);
+}

@@ -1,0 +1,77 @@
+@endpoint = http://localhost:3000/api/v1/models
+
+### Get all car models
+GET {{endpoint}} HTTP/3.0
+content-type: application/json
+
+### Get submodels of a specific car model
+GET {{endpoint}}/{{newObjectID}}/submodels HTTP/3.0
+content-type: application/json
+
+### Get a model by the name
+GET {{endpoint}}/name/E90 HTTP/3.0
+content-type: application/json
+
+### Get submodel by name
+GET {{endpoint}}/{{newObjectID}}/submodels/528i HTTP/3.0
+content-type: application/json
+
+###
+@newObjectID = {{postACar.response.headers.Location}}
+
+### Get a specific car model by ID
+GET {{endpoint}}/{{newObjectID}} HTTP/3.0
+content-type: application/json
+
+###
+# @name postACar
+
+POST {{endpoint}} HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995,
+  "yearDiscontinued": 2003,
+  "description": "Fourth-generation BMW 5 Series",
+  "submodels": [
+    {
+      "name": "528i",
+      "engineType": "I6",
+      "horsepower": 190,
+      "torque": 245,
+      "transmission": "Manual",
+      "year": 1997,
+      "imageURL": "https://example.com/e39_528i.jpg"
+    }
+  ]
+}
+
+### Update an existing car model
+PUT {{endpoint}}/{{newObjectID}} HTTP/3.0
+Content-Type: application/json
+x-api-key: e60isthegoat
+
+{
+  "name": "E39",
+  "yearIntroduced": 1995,
+  "yearDiscontinued": 2003,
+  "description": "Updated image link",
+  "submodels": [
+    {
+      "name": "528i",
+      "engineType": "I6",
+      "horsepower": 190,
+      "torque": 245,
+      "transmission": "Manual",
+      "year": 1997,
+      "imageURL": "https://www.e39source.com/img/IMG_Cooling%20System.jpeg"
+    }
+  ]
+}
+
+### Delete a car model
+DELETE {{endpoint}}/{{newObjectID}} HTTP/3.0
+content-type: application/json
+x-api-key: e60isthegoat

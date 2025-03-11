@@ -1,0 +1,117 @@
+openapi: '3.0.3'
+info:
+  title: BMW E-Chassis Models API
+  version: '1.0'
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local server
+paths:
+  /models:
+    get:
+      summary: Retrieve all car models
+      responses:
+        '200':
+          description: List of car models
+    post:
+      summary: Create a new car model
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarModel'
+      responses:
+        '201':
+          description: Car model created
+        '400':
+          description: Invalid input
+  /models/{id}:
+    get:
+      summary: Retrieve car model by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Car model details
+        '404':
+          description: Car model not found
+    put:
+      summary: Update car model by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarModel'
+      responses:
+        '200':
+          description: Car model updated
+        '400':
+          description: Invalid input
+        '404':
+          description: Car model not found
+    delete:
+      summary: Delete car model by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Car model deleted
+        '404':
+          description: Car model not found
+  /models/{id}/submodels:
+    get:
+      summary: Retrieve submodels of a car model
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of submodels
+components:
+  schemas:
+    CarModel:
+      type: object
+      properties:
+        name:
+          type: string
+        yearIntroduced:
+          type: integer
+        yearDiscontinued:
+          type: integer
+        description:
+          type: string
+        submodels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Submodel'
+    Submodel:
+      type: object
+      properties:
+        name:
+          type: string
+        engineType:
+          type: string
+        horsepower:
+          type: integer
+        torque:
+          type: integer
+        transmission:
+          type: string
+        year:
+          type: integer
