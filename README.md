@@ -70,20 +70,20 @@ A modern web application for managing BMW car models and their specifications, b
 2. Set up environment variables in `.env` file
 3. Install dependencies:
    ```
-   cd bmw-api && npm install
-   cd ../BmwApiPt2 && npm install
+   cd bmw-api; npm install
+   cd ../BmwApiPt2; npm install
    ```
 
 ### Development
 
 1. Start the backend:
    ```
-   cd bmw-api && npm run dev
+   cd bmw-api; npm run dev
    ```
 
 2. Start the frontend:
    ```
-   cd BmwApiPt2 && npm start
+   cd BmwApiPt2; npm start
    ```
 
 3. Access the application at `http://localhost:4200`
