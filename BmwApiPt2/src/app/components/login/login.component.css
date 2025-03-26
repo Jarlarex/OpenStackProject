@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  min-height: 100vh;
   padding: 20px;
   background-color: #f5f5f5;
 }
@@ -10,31 +10,35 @@
 .login-card {
   max-width: 400px;
   width: 100%;
-  padding: 20px;
+  padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 24px;
+  margin-bottom: 16px;
 }
 
 button[type="submit"] {
-  min-width: 120px;
-  height: 40px;
+  min-width: 140px;
+  height: 44px;
+  font-size: 16px;
 }
 
 mat-card-title {
-  margin-bottom: 20px;
-  color: #1976d2;
+  margin-bottom: 24px;
+  color: var(--bmw-blue);
   font-weight: 500;
+  font-size: 24px;
+  text-align: center;
 }
 
 mat-card-actions {
@@ -50,4 +54,47 @@ mat-spinner {
 .error-snackbar {
   background-color: #f44336;
   color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .login-card {
+    padding: 16px;
+    margin-top: 40px;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    margin: 0;
+  }
+
+  .full-width {
+    margin-bottom: 12px;
+  }
+
+  mat-form-field {
+    font-size: 14px;
+  }
+}
+
+/* Keyboard visibility adjustments for mobile */
+@media (max-height: 500px) {
+  .login-container {
+    min-height: auto;
+    padding-bottom: 40px;
+  }
+
+  .login-card {
+    margin-top: 20px;
+  }
 }

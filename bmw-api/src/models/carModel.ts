@@ -38,6 +38,23 @@ export interface Model {
   predecessor?: string;
   successor?: string;
   imageURL?: string;
+  // New additional fields
+  productionNumbers?: {
+    total?: number;
+    yearlyBreakdown?: { [year: string]: number };
+  };
+  awards?: Array<{
+    year: number;
+    title: string;
+    organization: string;
+  }>;
+  notableFeatures?: string[];
+  specialTechnology?: Array<{
+    name: string;
+    description: string;
+    yearIntroduced: number;
+  }>;
+  performanceVariants?: string[];
   // Timestamps
   createdAt?: Date;
   updatedAt?: Date;
@@ -100,6 +117,30 @@ export const ValidateModel = (model: Model) => {
     predecessor: Joi.string().optional(),
     successor: Joi.string().optional(),
     imageURL: Joi.string().optional(),
+    // New fields validation
+    productionNumbers: Joi.object({
+      total: Joi.number().optional(),
+      yearlyBreakdown: Joi.object().pattern(
+        Joi.string(),
+        Joi.number()
+      ).optional()
+    }).optional(),
+    awards: Joi.array().items(
+      Joi.object({
+        year: Joi.number().required(),
+        title: Joi.string().required(),
+        organization: Joi.string().required()
+      })
+    ).optional(),
+    notableFeatures: Joi.array().items(Joi.string()).optional(),
+    specialTechnology: Joi.array().items(
+      Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        yearIntroduced: Joi.number().required()
+      })
+    ).optional(),
+    performanceVariants: Joi.array().items(Joi.string()).optional(),
     createdAt: Joi.date().optional(),
     updatedAt: Joi.date().optional(),
   });
@@ -138,6 +179,30 @@ export const ValidateModelUpdate = (model: Partial<Model>) => {
     predecessor: Joi.string(),
     successor: Joi.string(),
     imageURL: Joi.string(),
+    // New fields validation for update
+    productionNumbers: Joi.object({
+      total: Joi.number(),
+      yearlyBreakdown: Joi.object().pattern(
+        Joi.string(),
+        Joi.number()
+      )
+    }),
+    awards: Joi.array().items(
+      Joi.object({
+        year: Joi.number().required(),
+        title: Joi.string().required(),
+        organization: Joi.string().required()
+      })
+    ),
+    notableFeatures: Joi.array().items(Joi.string()),
+    specialTechnology: Joi.array().items(
+      Joi.object({
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+        yearIntroduced: Joi.number().required()
+      })
+    ),
+    performanceVariants: Joi.array().items(Joi.string()),
     updatedAt: Joi.date(),
   });
 
