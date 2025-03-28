@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, effect, signal, OnDestroy } from '@angular/core';
+import { Component, OnInit, computed, effect, signal, OnDestroy, inject, Injector, runInInjectionContext } from '@angular/core';
 import { ModelService, Model, Submodel } from '../../services/model.service';
 import { SubmodelService } from '../../services/submodel.service';
 import { AuthCustomService } from '../../services/auth-custom.service';
@@ -48,6 +48,8 @@ export class ModelListComponent implements OnInit, OnDestroy {
   currentUser = this.authService.currentUser;
   isAdmin = this.authService.isAdmin;
 
+  private injector = inject(Injector);
+
   constructor(
     public modelService: ModelService,
     private submodelService: SubmodelService,
@@ -56,16 +58,22 @@ export class ModelListComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog
   ) {
-    // Set up an effect to update the displayed columns based on authentication
-    effect(() => {
-      const columns = ['name', 'yearIntroduced', 'yearDiscontinued', 'description'];
-      
-      // Add actions column if user is authenticated
-      if (this.authService.isAuthenticated()) {
-        columns.push('actions');
-      }
-      
-      this.displayedColumns.set(columns);
+    // Set up column effect in constructor
+    this.setupColumnEffect();
+  }
+
+  private setupColumnEffect(): void {
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        const columns = ['name', 'yearIntroduced', 'yearDiscontinued', 'description'];
+        
+        // Add actions column if user is authenticated
+        if (this.authService.isAuthenticated()) {
+          columns.push('actions');
+        }
+        
+        this.displayedColumns.set(columns);
+      }, { allowSignalWrites: true });
     });
   }
 
@@ -79,12 +87,14 @@ export class ModelListComponent implements OnInit, OnDestroy {
     }
     
     // Set up effect to reload liked submodels when auth state changes
-    effect(() => {
-      if (this.authService.isAuthenticated()) {
-        this.loadLikedSubmodels();
-      } else {
-        this.likedSubmodelsMap.set(new Map());
-      }
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        if (this.authService.isAuthenticated()) {
+          this.loadLikedSubmodels();
+        } else {
+          this.likedSubmodelsMap.set(new Map());
+        }
+      }, { allowSignalWrites: true });
     });
   }
 

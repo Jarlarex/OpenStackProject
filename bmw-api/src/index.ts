@@ -11,16 +11,19 @@ const PORT = process.env.PORT || 10000;
 
 export const app: Application = express();
 
-// Configure CORS based on environment
+// Configure CORS to accept all origins in development
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://bmw-frontend.onrender.com', 'https://openstackproject.onrender.com']
-    : 'http://localhost:4200',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    : '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+// Enable preflight for all routes
+app.options('*', cors(corsOptions));
 
 app.use(morgan('tiny'));
 app.use(express.json());

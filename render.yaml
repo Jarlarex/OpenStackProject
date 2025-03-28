@@ -9,6 +9,8 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: DB_CONN_STRING
+        sync: false  # Set this in Render dashboard
       - key: MONGO_USERNAME
         sync: false  # Set this in Render dashboard
       - key: MONGO_PASSWORD
