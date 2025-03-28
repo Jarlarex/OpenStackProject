@@ -1,0 +1,48 @@
+services:
+  # Backend API Service
+  - type: web
+    name: bmw-backend
+    env: docker
+    dockerfilePath: ./bmw-api/Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGO_USERNAME
+        sync: false
+      - key: MONGO_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: DB_NAME
+        value: bmw_database
+
+  # Frontend Service
+  - type: web
+    name: bmw-frontend
+    env: docker
+    dockerfilePath: ./BmwApiPt2/Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BACKEND_URL
+        fromService:
+          name: bmw-backend
+          type: web
+          property: host
+
+  # MongoDB Service
+  - type: pserv
+    name: bmw-mongodb
+    env: docker
+    dockerfilePath: ./mongodb/Dockerfile
+    disk:
+      name: mongodb-data
+      mountPath: /data/db
+      sizeGB: 10
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        sync: false
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        sync: false
