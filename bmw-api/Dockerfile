@@ -17,11 +17,12 @@ RUN npm run build
 # Remove devDependencies
 RUN npm prune --production
 
-# Expose port
-EXPOSE 3000
-
 # Set environment variables
 ENV NODE_ENV=production
+ENV PORT=10000
+
+# Expose port from environment variable
+EXPOSE ${PORT}
 
 # Start the application
 CMD ["node", "build/index.js"]

@@ -14,7 +14,7 @@ export const app: Application = express();
 // Configure CORS based on environment
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://bmw-frontend.onrender.com', 'https://bmw-backend.onrender.com']
+    ? ['https://bmw-frontend.onrender.com', 'https://openstackproject.onrender.com']
     : 'http://localhost:4200',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
@@ -24,6 +24,18 @@ app.use(cors(corsOptions));
 
 app.use(morgan('tiny'));
 app.use(express.json());
+
+// Root path handler
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    message: 'BMW API Server',
+    endpoints: {
+      health: '/health',
+      api: '/api/v1'
+    }
+  });
+});
 
 // API Routes
 app.use('/api/v1/models', carModelRoutes);
