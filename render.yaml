@@ -8,15 +8,15 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000
+        value: 10000
       - key: MONGO_USERNAME
-        sync: false
+        sync: false  # Set this in Render dashboard
       - key: MONGO_PASSWORD
-        sync: false
+        sync: false  # Set this in Render dashboard
       - key: JWT_SECRET
-        sync: false
+        sync: false  # Set this in Render dashboard
       - key: DB_NAME
-        value: bmw_database
+        value: Web2_2024
 
   # Frontend Service
   - type: web
@@ -31,18 +31,3 @@ services:
           name: bmw-backend
           type: web
           property: host
-
-  # MongoDB Service
-  - type: pserv
-    name: bmw-mongodb
-    env: docker
-    dockerfilePath: ./mongodb/Dockerfile
-    disk:
-      name: mongodb-data
-      mountPath: /data/db
-      sizeGB: 10
-    envVars:
-      - key: MONGO_INITDB_ROOT_USERNAME
-        sync: false
-      - key: MONGO_INITDB_ROOT_PASSWORD
-        sync: false

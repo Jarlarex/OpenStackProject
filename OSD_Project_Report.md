@@ -193,7 +193,98 @@ The project includes several types of tests:
 - Error handling
 
 ## Appendix 4 - Original Proposal
+### Project Proposal: Open Stack Development (OSD) 2025
 
+### 1. Current Situation
+#### Existing Application
+The BMW E-Chassis Application is a single-page app built with Angular. It allows users to:
+- View a list of BMW car models
+- Add or remove models
+- Edit details of existing models
+- Add, edit, or delete submodels for specific car models
+
+#### Technical Setup:
+- Frontend: Angular (Single-Page Application)
+- Backend: Express.js with a MongoDB database
+- Authentication: Auth0 (currently has a login issue causing the page to reload repeatedly)
+- Database Structure: Stores BMW models and their submodels
+
+#### Database Details:
+The database has a collection called bmw_models which includes:
+- Model Name
+- Year
+- Body Type
+- Engine Information
+- Related Submodels
+
+#### Current Problems and Improvements Needed:
+1. Fix Login Issue: Solve the problem where the page keeps reloading after logging in
+2. Improve Design: Make the app look better using modern design tools like Bootstrap or Material UI
+3. Add New Features:
+   - Let users "like" models and submodels
+   - Add more details about cars, like fuel efficiency, special editions, and price ranges
+4. User Permissions: Create a system where:
+   - Admins can add, edit, or delete models and submodels
+   - Regular users can only view and like models
+5. Testing and Bug Fixes: Make sure all features work properly and add tests for key functions
+
+### 2. Project Plan
+#### App Concept
+The new version of the BMW E-Chassis App will:
+- Fix the login issue and improve the user experience
+- Update the design for a modern look and feel
+- Add more details to the database about cars
+- Deploy the app to the cloud using Docker
+- Improve security with JWT authentication and user permissions
+
+#### Who Will Use It?
+- Car Fans and BMW Owners: People who want to explore BMW models
+- Developers: Those who want to learn by working with a car-related API
+- Resellers and Collectors: People who track the value of older BMW models
+
+#### Key Features:
+- Login Fix: Solve the login issue for a smoother experience
+- Better Design: Use modern tools to make the app look and work better
+- More Features:
+  - Admins can add, edit, or delete models and submodels
+  - Users can view and like models
+- Cloud Deployment: Host the app on AWS using Docker
+- State Management: Use Angular Signals to manage app data efficiently
+
+### 3. Design
+#### Priorities (MoSCoW Method):
+- Must Have:
+  - Fix the login issue
+  - Let admins add, edit, or delete models and submodels
+  - Secure the app with user permissions
+  - Build the frontend with Angular
+  - Deploy the app to the cloud using Docker
+- Should Have:
+  - Use a modern design framework like Bootstrap or Material UI
+  - Add unit tests for key features
+- Could Have:
+  - Add an image gallery for each BMW model
+- Won't Have (For Now):
+  - User profiles to save favourite models
+
+#### User Stories:
+1. As a user, I want to log in securely to access all features
+2. As an admin, I want to manage users and update the database safely
+3. As a car fan, I want to browse BMW models with detailed information
+4. As a user, I want to like and save my favourite BMW models
+
+### 4. Minimum Viable Product (MVP)
+The MVP will include:
+- A working login system (fixing the current issue)
+- Ability to add, edit, or delete models and submodels (for admins)
+- Users can view and like models
+- A secure backend with user permissions
+- A modern, responsive design using a CSS framework
+- Deployment to the cloud using Docker
+- Unit tests for core features
+
+### Conclusion
+This proposal outlines an improved version of the BMW E-Chassis App. The focus will be on fixing current issues, adding new features, improving security, and deploying the app to the cloud. The goal is to create a functional, scalable, and user-friendly app by the end of the semester.
 
 ## Additional Notes
 
@@ -209,4 +300,3 @@ The project includes several types of tests:
 - Enhance search and filtering capabilities
 - Add analytics for user interactions
 - Implement comprehensive image management system
-

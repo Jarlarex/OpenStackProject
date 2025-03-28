@@ -7,17 +7,20 @@ import cors from 'cors';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 export const app: Application = express();
 
-app.use(
-  cors({
-    origin: 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  })
-);
+// Configure CORS based on environment
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://bmw-frontend.onrender.com', 'https://bmw-backend.onrender.com']
+    : 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(morgan('tiny'));
 app.use(express.json());

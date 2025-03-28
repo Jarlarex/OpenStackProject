@@ -6,10 +6,10 @@ import { User } from "./models/user";
 dotenv.config();
 
 const connectionString: string = process.env.NODE_ENV === 'production'
-  ? `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.mongodb.net/bmw_database?retryWrites=true&w=majority`
+  ? `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.slwap.mongodb.net/Web2_2024?retryWrites=true&w=majority`
   : process.env.DB_CONN_STRING || "";
 
-const dbName: string = process.env.DB_NAME || "bmw_database";
+const dbName: string = process.env.DB_NAME || "Web2_2024";
 const client = new MongoClient(connectionString);
 
 let db: Db;
