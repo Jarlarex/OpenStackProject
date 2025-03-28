@@ -2,6 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, catchError, throwError, of, map } from 'rxjs';
 import { AuthCustomService } from './auth-custom.service';
+import { environment } from '../../environments/environment';
 
 export interface Submodel {
   _id?: string;
@@ -47,7 +48,7 @@ export interface Model {
   providedIn: 'root',
 })
 export class ModelService {
-  private baseUrl = 'http://localhost:3000/api/v1/models';
+  private baseUrl = `${environment.apiUrl}/api/${environment.apiVersion}/models`;
   
   // Using Angular Signals for state management
   private modelsSignal = signal<Model[]>([]);

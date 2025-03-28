@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, catchError, throwError, of, map } from 'rxjs';
 import { AuthCustomService } from './auth-custom.service';
 import { Submodel } from './model.service';
+import { environment } from '../../environments/environment';
 
 interface LikedSubmodelsResponse {
   likedSubmodels: Array<{
@@ -17,7 +18,7 @@ interface LikedSubmodelsResponse {
   providedIn: 'root',
 })
 export class SubmodelService {
-  private baseUrl = 'http://localhost:3000/api/v1/models';
+  private baseUrl = `${environment.apiUrl}/api/${environment.apiVersion}/models`;
   
   // Using Angular Signals for state management
   private submodelsSignal = signal<Map<string, Submodel[]>>(new Map());
@@ -140,7 +141,7 @@ export class SubmodelService {
 
     const headers = this.getHeaders();
     return this.http.post<any>(
-      `http://localhost:3000/api/v1/users/${userId}/like`, 
+      `${environment.apiUrl}/api/${environment.apiVersion}/users/${userId}/like`, 
       { modelId, submodelId }, 
       { headers }
     ).pipe(
@@ -163,7 +164,7 @@ export class SubmodelService {
 
     const headers = this.getHeaders();
     return this.http.post<any>(
-      `http://localhost:3000/api/v1/users/${userId}/unlike`, 
+      `${environment.apiUrl}/api/${environment.apiVersion}/users/${userId}/unlike`, 
       { modelId, submodelId }, 
       { headers }
     ).pipe(
@@ -185,7 +186,7 @@ export class SubmodelService {
     }
 
     const headers = this.getHeaders();
-    return this.http.get<LikedSubmodelsResponse>(`http://localhost:3000/api/v1/users/${userId}/liked`, { headers }).pipe(
+    return this.http.get<LikedSubmodelsResponse>(`${environment.apiUrl}/api/${environment.apiVersion}/users/${userId}/liked`, { headers }).pipe(
       tap(response => {
         // You could store the liked submodels in a signal here if needed
       }),

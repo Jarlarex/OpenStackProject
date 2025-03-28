@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError, of } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: string;
@@ -18,7 +19,7 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthCustomService {
-  private baseUrl = 'http://localhost:3000/api/v1/users';
+  private baseUrl = `${environment.apiUrl}/api/${environment.apiVersion}/users`;
   
   // Using Angular Signals for state management
   private authToken = signal<string | null>(localStorage.getItem('auth_token'));
